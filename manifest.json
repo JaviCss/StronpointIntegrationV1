@@ -1,0 +1,187 @@
+{
+ "author": {
+    "name": "Strongpoint Netsuite Integration",
+    "email": "leo.ferrero@strongpoint.io",
+    "url": "https://strongpoint.io"
+  },
+  "defaultLocale": "en",
+  "private": true,
+  "singleInstall": true,
+  "location": {
+    "support": {
+      "ticket_sidebar": "assets/iframe.html",
+      "modal": "assets/modal.html",
+      "nav_bar": "assets/configuration.html"
+    }
+  },
+  "parameters": [
+    {
+      "name": "activeAccount",
+      "type": "hidden",
+      "required": false
+    },
+    {
+      "name": "AccountId",
+      "type": "hidden",
+      "required": false
+    },
+    {
+      "name": "ConsumerKey",
+      "type": "hidden",
+      "required": false
+    },
+    {
+      "name": "ConsumerSecret",
+      "type": "hidden",
+      "required": false
+    },{
+      "name": "TokenId",
+      "type": "hidden",
+      "required": false
+    },{
+      "name": "TokenSecret",
+      "type": "hidden",
+      "required": false
+    },
+    {
+      "name": "AccountId1",
+      "type": "hidden",
+      "required": false
+    },
+    {
+      "name": "ConsumerKey1",
+      "type": "hidden",
+      "required": false
+    },
+    {
+      "name": "ConsumerSecret1",
+      "type": "hidden",
+      "required": false
+    },{
+      "name": "TokenId1",
+      "type": "hidden",
+      "required": false
+    },{
+      "name": "TokenSecret1",
+      "type": "hidden",
+      "required": false
+    },
+    {
+      "name": "AccountId2",
+      "type": "hidden",
+      "required": false
+    },
+    {
+      "name": "ConsumerKey2",
+      "type": "hidden",
+      "required": false
+    },
+    {
+      "name": "ConsumerSecret2",
+      "type": "hidden",
+      "required": false
+    },{
+      "name": "TokenId2",
+      "type": "hidden",
+      "required": false
+    },{
+      "name": "TokenSecret2",
+      "type": "hidden",
+      "required": false
+    },
+    {
+      "name": "AccountId3",
+      "type": "hidden",
+      "required": false
+    },
+    {
+      "name": "ConsumerKey3",
+      "type": "hidden",
+      "required": false
+    },
+    {
+      "name": "ConsumerSecret3",
+      "type": "hidden",
+      "required": false
+    },{
+      "name": "TokenId3",
+      "type": "hidden",
+      "required": false
+    },{
+      "name": "TokenSecret3",
+      "type": "hidden",
+      "required": false
+    },
+    {
+      "name": "AccountId4",
+      "type": "hidden",
+      "required": false
+    },
+    {
+      "name": "ConsumerKey4",
+      "type": "hidden",
+      "required": false
+    },
+    {
+      "name": "ConsumerSecret4",
+      "type": "hidden",
+      "required": false
+    },{
+      "name": "TokenId4",
+      "type": "hidden",
+      "required": false
+    },{
+      "name": "TokenSecret4",
+      "type": "hidden",
+      "required": false
+    },
+    {
+      "name": "AccountId5",
+      "type": "hidden",
+      "required": false
+    },
+    {
+      "name": "ConsumerKey5",
+      "type": "hidden",
+      "required": false
+    },
+    {
+      "name": "ConsumerSecret5",
+      "type": "hidden",
+      "required": false
+    },{
+      "name": "TokenId5",
+      "type": "hidden",
+      "required": false
+    },{
+      "name": "TokenSecret5",
+      "type": "hidden",
+      "required": false
+    },
+    {
+      "name": "requestApproveGroups",
+      "type": "hidden",
+      "required": false,
+      "default": "null"
+    },    
+    {
+      "name": "approveGroups",
+      "type": "hidden",
+      "required": false,
+      "default": "null"
+    },
+    {
+      "name": "approvalProcess",
+      "type": "hidden",
+      "required": false,
+      "default": "null"
+    }
+
+  ],
+  "version": "1.0",
+  "frameworkVersion": "2.0",
+  "domainWhitelist": [
+    "localhost:4567",
+    "https://strongpoint5023.zendesk.com/"
+  ]
+}

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="./css/style.css" />
+    <link rel="shortcut icon" href="./logo-small.png" type="image/x-icon" />
+    <!--STYLES-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous" />
+    <!--FONTS-->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet" />
+    <!--ICONS-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+        crossorigin="anonymous" />
+</head>
+
+<body class="mx-auto body" style="overflow-y: hidden;">
+    <div class="mod-body mx-auto">
+        <div class="mod-head">
+            <h2 class="os-20 fw-bold px-0 pb-4 m-0 header">Lookup Customization</h2>
+            <h2 class="os-20 fw-bold px-0 pb-4 m-0 header2 colapse">Select Customizations to attach
+            </h2>
+        </div>
+        <div id="mod-inner" class="mod-inner">
+            <div id="loader-pane" class="">
+                <div id="loader" class="mx-auto my-2"></div>
+            </div>  
+            <form class="form-modal" id="modal">
+                <div class="container" style="max-width: 100%;">
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="form-group has-success mb-4 ">
+                                <label class="os-14 pb-2 fw-bold" for="">Name</label>
+                                <input class="m-16" type="text" name="name" required placeholder="" id="inp-name" />
+                                <span id="error" class="help-block"></span>
+                            </div>
+                            <div class="form-group has-success mb-4 ">
+                                <label class="os-14 pb-2 fw-bold" for="">Script ID</label>
+                                <input class="m-16" type="text" name="scriptid" placeholder="" id="inp-scriptid" />
+                                <span id="error" class="help-block"></span>
+                            </div>
+                            <div class="form-group has-success mb-4 ">
+                                <label class="os-14 pb-2 fw-bold" for="">Bundle ID</label>
+                                <input class="m-16" type="text" name="bundleid" placeholder="" id="inp-bundleid" />
+                                <span id="error" class="help-block"></span>
+                            </div>
+                        </div>
+                        <div class="col-7">
+                            <div class="form-group has-success mb-4 ">
+                                <label class="os-14 pb-2 fw-bold" for="">Modified By</label>
+                                <select class="m-16" name="modif" id="inp-modif">
+                                </select>
+                                <span id="error" class="help-block"></span>
+                            </div>
+                            <div class="form-group has-success mb-4 ">
+                                <label class="os-14 pb-2 fw-bold" for="">Type</label>
+                                <select class="m-16" name="type" id="inp-type">
+                                    <option value="" selected>-Select Type-</option>
+                                    <option value="74">Bill of Materials</option>
+                                    <option value="5">Body Field</option>
+                                    <option value="71">Bundle</option>
+                                    <option value="35">Bundle Installation Script</option>
+                                    <option value="77">Celigo Integration</option>
+                                    <option value="69">Class</option>
+                                    <option value="20">Client Script</option>
+                                    <option value="4">Column Field</option>
+                                    <option value="78">Connections</option>
+                                    <option value="25">CRM Field</option>
+                                    <option value="83">Custom Advanced PDF/HTML Template</option>
+                                    <option value="30">Custom Record Field</option>
+                                    <option value="40">Custom Report</option>
+                                    <option value="73">Custom Segments</option>
+                                    <option value="67">Department</option>
+                                    <option value="52">Email Template</option>
+                                    <option value="3">Entity Field</option>
+                                    <option value="6">Entry Form</option>
+                                    <option value="80">Exports</option>
+                                    <option value="62">External Custom Field</option>
+                                    <option value="63">External Report</option>
+                                    <option value="64">External Report Type</option>
+                                    <option value="65">External Script</option>
+                                    <option value="47">External System</option>
+                                    <option value="79">Flows</option>
+                                    <option value="82">Form-level Script</option>
+                                    <option value="54">Group</option>
+                                    <option value="44">HTML File</option>
+                                    <option value="81">Imports</option>
+                                    <option value="48">Integration</option>
+                                    <option value="75">Inventory Number</option>
+                                    <option value="26">Item Field</option>
+                                    <option value="29">Item Number Field</option>
+                                    <option value="28">Item Option Field</option>
+                                    <option value="45">JavaScript File</option>
+                                    <option value="59">Library Script File</option>
+                                    <option value="1">List</option>
+                                    <option value="68">Location</option>
+                                    <option value="61">Map/Reduce Script</option>
+                                    <option value="9">Mass Update</option>
+                                    <option value="23">Mass Update Script</option>
+                                    <option value="76">Online Customer Form</option>
+                                    <option value="27">Other Field</option>
+                                    <option value="46">Other File</option>
+                                    <option value="66">Plug-In Implementation</option>
+                                    <option value="33">Plug-In Script</option>
+                                    <option value="18">Portlet Script</option>
+                                    <option value="42">Promotions Script</option>
+                                    <option value="2">Record</option>
+                                    <option value="22">Restlet Script</option>
+                                    <option value="34">Scheduled Script</option>
+                                    <option value="51">Script Deployments</option>
+                                    <option value="8">Search</option>
+                                    <option value="58">Setup Preference</option>
+                                    <option value="15">SSP Application</option>
+                                    <option value="36">Standard Column Field</option>
+                                    <option value="31">Standard Field</option>
+                                    <option value="24">Standard Record</option>
+                                    <option value="39">Standard Report</option>
+                                    <option value="37">Standard Sublist</option>
+                                    <option value="60">Subsidiary</option>
+                                    <option value="17">Suitelet Script</option>
+                                    <option value="7">Transaction Form</option>
+                                    <option value="21">User Event Script</option>
+                                    <option value="50">User Role</option>
+                                    <option value="43">WebApp Script</option>
+                                    <option value="10">Workflow</option>
+                                    <option value="19">Workflow Action Script</option>
+                                </select>
+                                <span id="error" class="help-block"></span>
+                            </div>
+                            <div class="d-flex">
+                                <div class="form-group has-success mb-4 w-50">
+                                    <label class="os-14 pb-2 fw-bold" for="">From</label>
+                                    <input type="date" id="inp-date-from" min="1990-01-01" max="2090-01-01">
+                                    <span id="error" class="help-block"></span>
+                                </div>
+                                <div class="form-group has-success mb-4 w-50">
+                                    <label class="os-14 pb-2 fw-bold" for="">To</label>
+                                    <input type="date" id="inp-date-to">
+                                    <span id="error" class="help-block"></span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <button class="c-btn btn-form-close os-14" type="submit">Lookup</button>
+            </form>            
+            <div id="look-list" class="look-list colapse">         
+                    
+                <table class="ui">
+                    <thead>
+                        <tr class="look-tr">
+                            <th id="name" class="d-flex w-60">
+                                <input type="checkbox" id="lookUpselectAllCust" class="lookupSelectedCusts my-auto"
+                                    onclick="checkAll(this);" style="margin-right: 8px;">
+                                <span class="my-auto">Name</span>
+                            </th>
+                            <th id="type" class="look-th d-flex w-40">Script Id</th>
+                        </tr>
+                    </thead>                   
+                    <tbody class="resultList" style=" 
+                    display: block;
+                    list-style: none;
+                    padding-left: 0;
+                    overflow-y: scroll;
+                    max-height: 250px;
+                    min-height: 250px;">                         
+                    </tbody>
+                </table>
+                <button class="btn-form-close" id="addCustom" onclick="addCustom()">Add selected Customizations.</button>
+            </div>
+        </div>
+    </div>
+    <!--ZENDESK-->
+    <script type="text/javascript"
+        src="https://static.zdassets.com/zendesk_app_framework_sdk/2.0/zaf_sdk.min.js"></script>
+    <!--HANDLEBAR-->
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@4.3.3/dist/handlebars.min.js"></script>
+    <!--JQUERY-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous"></script>
+    <!--BOOTSTRAP-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+        crossorigin="anonymous"></script>
+    <script src="js/oauth-1.0a.js"></script>
+    <script src="js/crypto-js.js"></script>
+    <script src="js/modal.js"></script>
+</body>
+
+</html>
