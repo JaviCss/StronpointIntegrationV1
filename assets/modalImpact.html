@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <link rel="stylesheet" type="text/css" href="./css/modalImpact.css" />
+    <link rel="stylesheet" type="text/css" href="./css/notifications.css" />
     <link rel="shortcut icon" href="./logo-small.png" type="image/x-icon" />
     <!--STYLES-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -28,13 +29,13 @@
 
             <ul class="nav nav-pills " id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <a class="os-16 fw-bold nav-link active text-center" id="pills-safe-tab" data-bs-toggle="pill"
+                    <a class="os-16 fw-bold nav-link  text-center" id="pills-safe-tab" data-bs-toggle="pill"
                         href="#pills-safe" role="tab" aria-controls="pills-safe" aria-selected="true">Can Be Safely
                         Modified or Delete
                     </a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="os-16 fw-bold nav-link text-center" id="pills-notsafe-tab" data-bs-toggle="pill"
+                    <a class="os-16 fw-bold nav-link active text-center" id="pills-notsafe-tab" data-bs-toggle="pill"
                         href="#pills-notsafe" role="tab" aria-controls="pills-notsafe" aria-selected="false">Cannot Be
                         Safely Modified or Deleted
                     </a>
@@ -51,15 +52,15 @@
                 <div id="loader-pane" class="">
                     <div id="loader" class="mx-auto my-2"></div>
                 </div>
-                <div class="tab-pane fade show active text-center" id="pills-safe" role="tabpanel"
+                <div class="tab-pane fade  text-center" id="pills-safe" role="tabpanel"
                     aria-labelledby="pills-safe-tab">
 
                     <table class="table">
                         <thead>
                             <tr class="look-trh mt-3">
-                                 <th id="type" class="look-th d-flex w-100 os-16 fw-bold ">
+                                <th id="type" class="look-th d-flex w-100 os-16 fw-bold ">
                                     <p class="os-14 my-auto mx-auto">Customization</p>
-                                </th>                                
+                                </th>
                             </tr>
                         </thead>
                         <tbody class="data-safe" style=" 
@@ -73,18 +74,21 @@
                     </table>
 
                 </div>
-                <div class="tab-pane fade text-center" id="pills-notsafe" role="tabpanel"
+                <div class="tab-pane fade show active text-center" id="pills-notsafe" role="tabpanel"
                     aria-labelledby="pills-notsafe-tab">
 
                     <table class="table">
                         <thead>
                             <tr class="look-trh mt-3">
                                 <th id="name" class="look-th d-flex w-60 os-16 fw-bold ">
-                                    <p class="os-14 my-auto mx-auto">Customization</p></th>
+                                    <p class="os-14 my-auto mx-auto">Customization</p>
+                                </th>
                                 <th id="type" class="look-th d-flex w-40 os-16 fw-bold ">
-                                    <p class="os-14 my-auto mx-auto">Warning</p></th>
+                                    <p class="os-14 my-auto mx-auto">Warning</p>
+                                </th>
                                 <th id="type" class="look-th d-flex w-40 os-16 fw-bold ">
-                                    <p class="os-14 my-auto mx-auto">Impacted Customizations</p></th>
+                                    <p class="os-14 my-auto mx-auto">Impacted Customizations</p>
+                                </th>
                             </tr>
                         </thead>
                         <tbody class="data-notsafe" style=" 
@@ -104,9 +108,11 @@
                         <thead>
                             <tr class="look-trh mt-3">
                                 <th id="name" class="look-th d-flex w-60 os-16 fw-bold ">
-                                    <p class="os-14 my-auto mx-auto">Customization</p></th>
+                                    <p class="os-14 my-auto mx-auto">Customization</p>
+                                </th>
                                 <th id="type" class="look-th d-flex w-40 os-16 fw-bold ">
-                                    <p class="os-14 my-auto mx-auto">Script Id</p></th>
+                                    <p class="os-14 my-auto mx-auto">Script Id</p>
+                                </th>
                             </tr>
                         </thead>
                         <tbody class="data-notsafe" style=" 
@@ -119,11 +125,11 @@
                         </tbody>
                     </table>
 
-                </div>            
+                </div>
             </div>
         </div>
 
-        
+
     </div>
 
 
@@ -142,6 +148,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
         crossorigin="anonymous"></script>
+    <!-- Bootstrap Files -->
+    <script src="js/bootstrap-show-notification.js"></script>
     <script src="js/oauth-1.0a.js"></script>
     <script src="js/crypto-js.js"></script>
     <script src="js/modalImpact.js"></script>

@@ -102,6 +102,8 @@ $('.btn-change-account').click(async function () {
   setTimeout(() => {
     renderAccount()
   }, 2000)
+
+
 })
 function setNsCredentials1(
   accountId,
@@ -111,7 +113,7 @@ function setNsCredentials1(
   tokenSecret
 ) {
   client.metadata().then(metadata => {
-    let id = metadata.appId === 0 ? 500882 : metadata.appId
+    let id = metadata.appId
     let settings2 = {
       url: '/api/v2/apps/installations.json?include=app',
       type: 'GET',
@@ -139,12 +141,12 @@ function setNsCredentials1(
               function (data) {
                 reload(client)
               },
-              function (response) {}
+              function (response) { }
             )
           }
         })
       },
-      function (response) {}
+      function (response) { }
     )
   })
 }
@@ -156,7 +158,7 @@ function setNsCredentials2(
   tokenSecret
 ) {
   client.metadata().then(metadata => {
-    let id = metadata.appId === 0 ? 500882 : metadata.appId
+    let id = metadata.appId
     let settings2 = {
       url: '/api/v2/apps/installations.json?include=app',
       type: 'GET',
@@ -184,12 +186,12 @@ function setNsCredentials2(
               function (data) {
                 reload(client)
               },
-              function (response) {}
+              function (response) { }
             )
           }
         })
       },
-      function (response) {}
+      function (response) { }
     )
   })
 }
@@ -201,7 +203,7 @@ function setNsCredentials3(
   tokenSecret
 ) {
   client.metadata().then(metadata => {
-    let id = metadata.appId === 0 ? 500882 : metadata.appId
+    let id = metadata.appId
     let settings2 = {
       url: '/api/v2/apps/installations.json?include=app',
       type: 'GET',
@@ -229,12 +231,12 @@ function setNsCredentials3(
               function (data) {
                 reload(client)
               },
-              function (response) {}
+              function (response) { }
             )
           }
         })
       },
-      function (response) {}
+      function (response) { }
     )
   })
 }
@@ -246,7 +248,7 @@ function setNsCredentials4(
   tokenSecret
 ) {
   client.metadata().then(metadata => {
-    let id = metadata.appId === 0 ? 500882 : metadata.appId
+    let id = metadata.appId
     let settings2 = {
       url: '/api/v2/apps/installations.json?include=app',
       type: 'GET',
@@ -274,12 +276,12 @@ function setNsCredentials4(
               function (data) {
                 reload(client)
               },
-              function (response) {}
+              function (response) { }
             )
           }
         })
       },
-      function (response) {}
+      function (response) { }
     )
   })
 }
@@ -291,7 +293,7 @@ function setNsCredentials5(
   tokenSecret
 ) {
   client.metadata().then(metadata => {
-    let id = metadata.appId === 0 ? 500882 : metadata.appId
+    let id = metadata.appId
     let settings2 = {
       url: '/api/v2/apps/installations.json?include=app',
       type: 'GET',
@@ -319,12 +321,12 @@ function setNsCredentials5(
               function (data) {
                 reload(client)
               },
-              function (response) {}
+              function (response) { }
             )
           }
         })
       },
-      function (response) {}
+      function (response) { }
     )
   })
 }
@@ -400,7 +402,7 @@ function setgroup(requestApproveGroups) {
     requestApproveGroups = 'null'
   }
   client.metadata().then(metadata => {
-    let id = metadata.appId === 0 ? 500882 : metadata.appId
+    let id = metadata.appId
     let settings2 = {
       url: '/api/v2/apps/installations.json?include=app',
       type: 'GET',
@@ -424,12 +426,12 @@ function setgroup(requestApproveGroups) {
               function (data) {
                 reload(client)
               },
-              function (response) {}
+              function (response) { }
             )
           }
         })
       },
-      function (response) {}
+      function (response) { }
     )
   })
 }
@@ -438,7 +440,7 @@ function setgroup2(approveGroups) {
     approveGroups = 'null'
   }
   client.metadata().then(metadata => {
-    let id = metadata.appId === 0 ? 500882 : metadata.appId
+    let id = metadata.appId
     let settings2 = {
       url: '/api/v2/apps/installations.json?include=app',
       type: 'GET',
@@ -462,18 +464,18 @@ function setgroup2(approveGroups) {
               function (data) {
                 reload(client)
               },
-              function (response) {}
+              function (response) { }
             )
           }
         })
       },
-      function (response) {}
+      function (response) { }
     )
   })
 }
 function setapprovalProcess(approvalProcess) {
   client.metadata().then(metadata => {
-    let id = metadata.appId === 0 ? 502876 : metadata.appId
+    let id = metadata.appId
     let settings2 = {
       url: '/api/v2/apps/installations.json?include=app',
       type: 'GET',
@@ -500,12 +502,12 @@ function setapprovalProcess(approvalProcess) {
                 }, 2000)
                 reload(client)
               },
-              function (response) {}
+              function (response) { }
             )
           }
         })
       },
-      function (response) {}
+      function (response) { }
     )
   })
 }
@@ -535,7 +537,7 @@ client.request(settings).then(function (data) {
     document.querySelector('#select-groups-2').appendChild(option2)
   })
 })
-//select('In SP Netsuite')
+//select('SP Approval In NetSuite')
 // select approval process
 function select(selectedValues) {
   for (const option of document.querySelectorAll('.custom-option')) {
@@ -551,18 +553,17 @@ function select(selectedValues) {
     }
   }
 }
-document
-  .querySelector('.custom-select-wrapper')
-  .addEventListener('click', function () {
+document.querySelector('.custom-select-wrapper').addEventListener('click', function () {
     this.querySelector('.custom-select').classList.toggle('open')
   })
 for (const option of document.querySelectorAll('.custom-option')) {
+  option.classList.remove('selected')
   option.addEventListener('click', function () {
     if (!this.classList.contains('selected')) {
-      document.querySelector('#default').classList.remove('selected')
-      this.parentNode
-        .querySelector('.custom-option')
-        .classList.remove('selected')
+      for (const option of document.querySelectorAll('.custom-option')) {
+        option.classList.remove('selected')
+      }
+         
       this.classList.add('selected')
       this.closest('.custom-select').querySelector(
         '.custom-select__trigger span'
@@ -587,7 +588,7 @@ function renderAccount() {
   let accContainer = document.querySelector('#acc-container')
   accContainer.innerHTML = ''
   client.metadata().then(async function (metadata) {
-    let id = metadata.appId === 0 ? 500882 : metadata.appId
+    let id = metadata.appId
     let settings2 = {
       url: '/api/v2/apps/installations.json?include=app',
       type: 'GET',
@@ -614,7 +615,7 @@ function renderAccount() {
                           div.className = 'col-4'
                           div.innerHTML = `
                                                             <div class="acc-ns">
-                                                                <h2 class="os-16 p-0 mt-auto mb-2 fw-bold ">Accoutn ${i}</h2>
+                                                                <h2 class="os-16 p-0 mt-auto mb-2 fw-bold ">Account ${i}</h2>
                                                                 <h2 class="os-14 p-0 mb-auto fw-bold">${element.value}</h2>
                                                                 <div class="btn-acc dropdown w-25">
                                                                     <button type="button" class="btn-config dropdown-toggle" data-bs-toggle="dropdown"
@@ -635,13 +636,14 @@ function renderAccount() {
                   .removeClass('loader1')
                   .trigger('enable')
                 $('#loader-pane').removeClass('loader-pane1')
+                reload(client)
               },
-              function (response) {}
+              function (response) {  }
             )
           }
         })
       },
-      function (response) {}
+      function (response) { }
     )
   })
   function createArrAcount(i) {

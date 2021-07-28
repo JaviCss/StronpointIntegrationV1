@@ -12,52 +12,95 @@ let linkCR
 let bundleID = 0
 let crId
 let client = ZAFClient.init()
+client.invoke('resize', { width: '100%', height: '900px' })
 client.on('reload', function () {
   setTimeout(() => {
     start(client)
-  }, 500)
+  }, 1300)
 })
 start(client)
-client.invoke('resize', { width: '100%', height: '900px' })
+
 var httpMethod = 'GET'
 function start(client) {
   try {
+
     client.get('ticket').then(async function (data) {
+
       userData = await getCurrentUser()
       userName = userData?.name
       ticketNumber = data.ticket.id.toString()
       ticketSubject = data.ticket.subject
       ticketDescription = data.ticket.description
       ticketStatus = data.ticket.status
-      await client.metadata().then(async metadata => {
-        let approverGroups = metadata.settings.approveGroups
-        let requestApproveGroups = metadata.settings.requestApproveGroups
-        let approvalProcess = metadata.settings.approvalProcess
-        requestApproveGroups = requestApproveGroups.split(',')
-        approverGroups = approverGroups.split(',')
-        approvalProcess = approvalProcess.split(',')
-        let isOperator
-        userData?.groups.forEach(e => {
-          if (requestApproveGroups.includes(e.name)) {
-            isOperator = requestApproveGroups.includes(e.name)
-            return
-          }
-        })
-        let isAdministrator
-        userData?.groups.forEach(e => {
-          if (approverGroups.includes(e.name)) {
-            isAdministrator = approverGroups.includes(e.name)
-            return
-          }
-        })
-        showInfo(data, userName)
-        showHome(data)
-        await getManifest(client)
-        await getCustomizations(isOperator, isAdministrator, approvalProcess)
-        getNameAcc()
+
+      client.metadata().then(metadata => {
+        let id = metadata.appId
+        let settings2 = {
+          url: '/api/v2/apps/installations.json?include=app',
+          type: 'GET',
+          dataType: 'json',
+        }
+        client.request(settings2).then(
+          function (data) {
+            data.installations.forEach(e => {
+              if (e.app_id === id) {
+                let settings = {
+                  url: `/api/v2/apps/installations/${e.id}`,
+                  type: 'PUT',
+                  dataType: 'json',
+                }
+                client.request(settings).then(
+                  async function (data) {
+                    let approverGroups = data.settings.approveGroups
+                    let requestApproveGroups = data.settings.requestApproveGroups
+                    let approvalProcess = data.settings.approvalProcess
+                    requestApproveGroups = requestApproveGroups.split(',')
+                    approverGroups = approverGroups.split(',')
+                    approvalProcess = approvalProcess.split(',')
+                    let isOperator
+                    userData?.groups.forEach(e => {
+                      if (requestApproveGroups.includes(e.name)) {
+                        isOperator = requestApproveGroups.includes(e.name)
+                        return
+                      }
+                    })
+                    let isAdministrator
+                    userData?.groups.forEach(e => {
+                      if (approverGroups.includes(e.name)) {
+                        isAdministrator = approverGroups.includes(e.name)
+                        return
+                      }
+                    })
+                    // showInfo(data, userName)
+                    showHome(data)
+                    document.getElementById('btn-request').style.display = 'none'
+                    document.getElementById('btn-approved').style.display = 'none'
+                    document.getElementById('btn-reject').style.display = 'none'
+                    document.getElementById('btn-close-status').style.display = 'none'
+                    document.getElementById('btn-push').style.display = 'none'
+                    await getManifest(client)
+                    getNameAcc()
+                    getCustomizations(isOperator, isAdministrator, approvalProcess)
+
+
+
+
+
+
+
+                  },
+                  function (response) { }
+                )
+              }
+            })
+          },
+          function (response) { }
+        )
       })
+
+
     })
-  } catch (error) {}
+  } catch (error) { }
 }
 //Connection with netsuite
 async function getNameAcc() {
@@ -65,7 +108,7 @@ async function getNameAcc() {
   $('#info #loader').addClass('loader')
   $('#info #loader-pane').addClass('loader-pane')
   const params = await client.metadata().then(async metadata => {
-    let id = metadata.appId === 0 ? 502876 : metadata.appId
+    let id = metadata.appId
     let settings2 = {
       url: '/api/v2/apps/installations.json?include=app',
       type: 'GET',
@@ -85,20 +128,10 @@ async function getNameAcc() {
               function (dat) {
                 let acc = []
                 accountId = dat.settings.AccountId
-                  ? dat.settings.AccountId
-                  : 'TSTDRV1724328'
                 consumerKey = dat.settings.ConsumerKey
-                  ? dat.settings.ConsumerKey
-                  : '35f13daf104282ea3edfdd67cf3f21f58b8d9b1914305d7ec451aee0888ed112'
                 consumerSecret = dat.settings.ConsumerSecret
-                  ? dat.settings.ConsumerSecret
-                  : '0a410d4fb4c5b9219b4593ef3abe7fd4efb52ad351ed1199e82e9ad92cf1dfff'
                 tokenId = dat.settings.TokenId
-                  ? dat.settings.TokenId
-                  : '580ba69efedcd8f4bdd7ac7bec6bc0324245a56d24a66d52ab061e1c5cf3ab41'
                 tokenSecret = dat.settings.TokenSecret
-                  ? dat.settings.TokenSecret
-                  : 'ba3426be5d771f1346ef0b66e40c5da6796301ce2413ec0de3a210dfa2d0be5e'
                 acc.push(accountId)
                 acc.push(consumerKey)
                 acc.push(consumerSecret)
@@ -106,13 +139,13 @@ async function getNameAcc() {
                 acc.push(tokenSecret)
                 return acc
               },
-              function (response) {}
+              function (response) { }
             )
           }
         }
         return params3
       },
-      function (response) {}
+      function (response) { }
     )
     accountId = params1[0]
     consumerKey = params1[1]
@@ -126,6 +159,7 @@ async function getNameAcc() {
       consumerSecret,
       tokenId,
       tokenSecret,
+      `/app/site/hosting/restlet.nl?script=customscript_${scriptDeploy}&deploy=1`,
       `/app/site/hosting/restlet.nl?script=customscript_${scriptDeploy}&deploy=1`
     )
   })
@@ -136,12 +170,14 @@ async function getNameAcc() {
       let res = JSON.parse(results)
       $('#synchronized').text(res.companyname)
     })
-    .catch(e => {})
+    .catch(e => { })
 }
 function getCustomizations(isOperator, isAdministrator, approvalProcess) {
   const scriptDeploy = 'flo_cr_api'
   const action = 'getCRData'
   const ticketId = { ticketID: ticketNumber }
+
+
   const callback = results => {
     let policyApplied = results.policyApplied
     let levelRequired = results.clReq
@@ -159,6 +195,7 @@ function getCustomizations(isOperator, isAdministrator, approvalProcess) {
     } else {
       document.querySelector('#statusNS').textContent = statusNS
     }
+
     var element = document.getElementById('linkCR')
     element.href = linkCR
     let existingList = []
@@ -168,7 +205,7 @@ function getCustomizations(isOperator, isAdministrator, approvalProcess) {
     if (
       isOperator &&
       ['', 'Not Started', 'In Progress'].includes(results.statusBarState) &&
-      ['In SP Zendesk', 'In SP Netsuite'].includes(approvalProcess[0]) &&
+      ['SP Approval In Zendesk', 'SP Approval In NetSuite'].includes(approvalProcess[0]) &&
       true
     ) {
       document.getElementById('btn-request').style.display = 'flex'
@@ -177,31 +214,35 @@ function getCustomizations(isOperator, isAdministrator, approvalProcess) {
     if (
       isAdministrator &&
       results.statusBarState === 'Pending Approval' &&
-      ['In SP Zendesk'].includes(approvalProcess[0]) &&
+      ['SP Approval In Zendesk'].includes(approvalProcess[0]) &&
       true
     ) {
       document.getElementById('btn-approved').style.display = 'flex'
       document.getElementById('btn-reject').style.display = 'flex'
     }
+    // close
     if (
       isAdministrator &&
       results.statusBarState === 'Approved' &&
-      ['In SP Zendesk'].includes(approvalProcess[0]) &&
+      ['SP Approval In Zendesk', 'No Approval Needed'].includes(approvalProcess[0]) &&
       true
     ) {
       document.getElementById('btn-close-status').style.display = 'flex'
     }
+    // push
 
     if (
       isAdministrator &&
-      !['Completed', 'Rejected', 'Cancelled'].includes(
+      !['Completed', 'Rejected', 'Cancelled', 'Approved'].includes(
         results.statusBarState
-      ) &&
-      ['none'].includes(approvalProcess[0]) &&
+      ) && ['No Approval Needed'].includes(approvalProcess[0]) &&
       true
     ) {
-      document.getElementById('btn-close-status').style.display = 'flex'
+      document.getElementById('btn-push').style.display = 'flex'
     }
+
+
+
     localStorage.setItem(
       'selectedCustomizationValues',
       JSON.stringify(existingList)
@@ -224,7 +265,7 @@ function getCustomizations(isOperator, isAdministrator, approvalProcess) {
       document.getElementById('btn-reject').style.display = 'flex'
     }
   }
-  transmittransmiToNetsuite(scriptDeploy, action, ticketId, callback, callbackError)
+  transmitToNetsuite(scriptDeploy, action, ticketId, callback, callbackError)
 }
 async function updateTicketStatus(newState) {
   const scriptDeploy = 'flo_cr_api'
@@ -241,6 +282,20 @@ async function updateTicketStatus(newState) {
   }
   await transmitToNetsuite(scriptDeploy, action, params, callback)
 }
+
+function setPathEndoded(baseObject) {
+  var result = ''
+  Object.entries(baseObject).forEach(([item, prop]) => {
+    if (prop && prop.trim() !== '')
+      result += `${result.length > 0 ? '&' : ''}${item}=${encodeURIComponent(prop.trim())}`
+  })
+  return result
+}
+
+
+
+
+
 async function transmitToNetsuite(
   scriptDeploy,
   action,
@@ -268,7 +323,7 @@ async function transmitToNetsuite(
     return result
   }
   const params = await client.metadata().then(async metadata => {
-    let id = metadata.appId === 0 ? 502876 : metadata.appId
+    let id = metadata.appId
     let settings2 = {
       url: '/api/v2/apps/installations.json?include=app',
       type: 'GET',
@@ -286,6 +341,7 @@ async function transmitToNetsuite(
             }
             params3 = await client.request(settings).then(
               function (dat) {
+                let acc = []
                 accountId = dat.settings.AccountId
                 consumerKey = dat.settings.ConsumerKey
                 consumerSecret = dat.settings.ConsumerSecret
@@ -298,19 +354,24 @@ async function transmitToNetsuite(
                 acc.push(tokenSecret)
                 return acc
               },
-              function (response) {}
+              function (response) { }
             )
           }
         }
         return params3
       },
-      function (response) {}
+      function (response) { }
     )
-    accountId = params1[0]
+    if (params1[0] === null) {
+      accountId = ''
+    } else {
+      accountId = params1[0]
+    }
     consumerKey = params1[1]
     consumerSecret = params1[2]
     tokenId = params1[3]
     tokenSecret = params1[4]
+
     return serviceNestsuite(
       `https://${accountId.toLowerCase()}.restlets.api.netsuite.com`,
       accountId,
@@ -320,8 +381,13 @@ async function transmitToNetsuite(
       tokenSecret,
       `/app/site/hosting/restlet.nl?script=customscript_${scriptDeploy}&deploy=customdeploy_${scriptDeploy}&action=${action}&${setPath(
         formValues
+      )}`,
+      `/app/site/hosting/restlet.nl?script=customscript_${scriptDeploy}&deploy=customdeploy_${scriptDeploy}&action=${action}&${setPathEndoded(
+        formValues
       )}`
+
     )
+
   })
   client
     .request(params)
@@ -335,13 +401,42 @@ async function transmitToNetsuite(
           elementos[i].classList.remove('hid')
           elementos[i].classList.add('vis')
         }
+
+        const elementos2 = document.querySelectorAll('#infoNs')
+        for (i = 0; i < elementos2.length; i++) {
+          elementos2[i].classList.remove('hid')
+          elementos2[i].classList.add('vis')
+        }
+
       } else {
         for (i = 0; i < elementos.length; i++) {
           elementos[i].classList.add('hid')
           elementos[i].classList.remove('vis')
         }
       }
-      callback(results)
+      if (results.status === 'failed') {
+        notifications('primary', results.message)
+      }
+
+
+      if (results.status === 'success') {
+
+
+        callback(results)
+        // notifications('info', results.status)
+        removeLoader()
+
+      }
+      removeLoader()
+      $('#existing-customizations.bundle-id-lista #loader').removeClass('loader').trigger('enable')
+      $('#existing-customizations.bundle-id-lista #loader-pane').removeClass('loader-pane')
+
+      $(`#bundle-id.bundle-id-lista #loader`).removeClass('loader').trigger('enable')
+      $('#bundle-id.bundle-id-lista #loader-pane').removeClass('loader-pane')
+
+      $(`#proposed-customizations #loader`).removeClass('loader').trigger('enable')
+      $('#proposed-customizations #loader-pane').removeClass('loader-pane')
+
     })
     .catch(e => {
       const elementos = document.querySelectorAll('#infoNs')
@@ -352,6 +447,7 @@ async function transmitToNetsuite(
       if (e.statusText === 'error') {
         removeLoader()
       }
+      removeLoader()
     })
 }
 function serviceNestsuite(
@@ -361,7 +457,8 @@ function serviceNestsuite(
   consumer_secret,
   token_id,
   token_secret,
-  path
+  path,
+  pathEncoded
 ) {
   function generateTbaHeader(
     domainBase,
@@ -372,6 +469,7 @@ function serviceNestsuite(
     tokenSecret,
     httpMethod
   ) {
+
     httpMethod =
       httpMethod == undefined || httpMethod == null ? 'GET' : httpMethod
     var base_url = domainBase.split('?')[0]
@@ -416,8 +514,9 @@ function serviceNestsuite(
     token_id,
     token_secret
   )
+  let urln = domainBase + pathEncoded
   let options = {
-    url: restUrl,
+    url: urln,
     type: 'GET',
     headers: headerWithRealm,
     cors: false,
@@ -427,10 +526,15 @@ function serviceNestsuite(
 }
 
 function getManifest(client) {
+  $('#info #loader').addClass('loader')
+  $('#info #loader-pane').addClass('loader-pane')
   $('#select-acc-ui').change(function () {
     var estado = $('#select-acc-ui').val()
+    $('#info #loader').addClass('loader')
+    $('#info #loader-pane').addClass('loader-pane')
     client.metadata().then(metadata => {
-      let id = metadata.appId === 0 ? 500882 : metadata.appId
+      let id = metadata.appId
+
       let settings2 = {
         url: '/api/v2/apps/installations.json?include=app',
         type: 'GET',
@@ -484,16 +588,16 @@ function getManifest(client) {
                     },
                   }
                   client.request(settings3).then(
-                    function (dataS) {},
-                    function (response) {}
+                    function (dataS) { },
+                    function (response) { }
                   )
                 },
-                function (response) {}
+                function (response) { }
               )
             }
           })
         },
-        function (response) {}
+        function (response) { }
       )
     })
     var topBarClientPromise = client
@@ -515,7 +619,8 @@ function getManifest(client) {
   })
   //completa el dropbox
   client.metadata().then(metadata => {
-    let id = metadata.appId === 0 ? 502876 : metadata.appId
+    let id = metadata.appId
+
     let settings2 = {
       url: '/api/v2/apps/installations.json?include=app',
       type: 'GET',
@@ -563,18 +668,18 @@ function getManifest(client) {
                     const option = document.createElement('option')
                     option.value = 0
                     option.className = 'option-acc'
-                    option.innerHTML = `Selected ${element.name}: ${element.value}`
+                    option.innerHTML = `Selected Account ID: ${element.value}`
                     option.selected = true
                     select.appendChild(option)
                   }
                 })
               },
-              function (response) {}
+              function (response) { }
             )
           }
         })
       },
-      function (response) {}
+      function (response) { }
     )
   })
 
@@ -612,7 +717,7 @@ function showHome(data) {
   $('#home').html(html)
   let btn2 = document.getElementById('proposed')
   btn2.addEventListener('click', () => {
-    popModal('assets/modal.html', '410')
+    popModal('assets/modal.html', '440')
   })
   let btn3 = document.getElementById('lookup')
   btn3.addEventListener('click', () => {
@@ -675,9 +780,12 @@ function removeExistingCustomization(existingName, existingId) {
   }
   const callback = async results => {
     let existingList = []
-    results.custIds.forEach((id, idx) => {
-      existingList.push({ name: results.custNames[idx], id: id })
-    })
+    if (results.custIds) {
+      results.custIds.forEach((id, idx) => {
+        existingList.push({ name: results.custNames[idx], id: id })
+      })
+    }
+
     await localStorage.setItem(
       'selectedCustomizationValues',
       JSON.stringify(existingList)
@@ -787,7 +895,7 @@ function addBundle() {
     //compara si es un numero
     if (!isNaN($('#inp-bundle')[0].value)) {
       //compara si tiene mas de 6 digitos
-      if ($('#inp-bundle')[0].value.length === 6) {
+      if ($('#inp-bundle')[0].value.length > 0) {
         //activa y desactiva el boton
         $('#bundle-id.bundle-id-lista #loader').addClass('loader')
         $('#bundle-id.bundle-id-lista #loader-pane').addClass('loader-pane')
@@ -890,7 +998,7 @@ function popModal(url, h) {
       var modalClient = client.instance(
         modalContext['instances.create'][0].instanceGuid
       )
-      client.on('instance.registered', function () {})
+      client.on('instance.registered', function () { })
       modalClient.on('modal.close', function () {
         if (localStorage.getItem('selectedCustomizationValues')) {
           renderlookup()
@@ -928,3 +1036,22 @@ function removeLoader() {
     $('#loader-pane').removeClass('loader-pane')
   }
 }
+
+
+
+
+
+
+// notificaciones
+function notifications(type, message) {
+  $.showNotification({
+    body: message,
+    duration: 3000,
+    type: type,
+    maxWidth: "300px",
+    shadow: "0 2px 6px rgba(0,0,0,0.2)",
+    zIndex: 100,
+    margin: "1rem"
+  })
+}
+

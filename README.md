@@ -59,10 +59,3 @@ https://developer.zendesk.com/documentation/apps/app-developer-guide/using-the-a
 
 
 
-
-
-http://catalogoweb.agenciawalkers.online/
-http://partnersbike.agenciawalkers.online/
-http://activainmobiliaria.online/
-http://angelmarketing.site/
-https://agendadigitalcba.com/

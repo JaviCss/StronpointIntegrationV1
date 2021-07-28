@@ -1,8 +1,8 @@
 {
   "app": {
-    "name": "Zen Tunes",
-    "short_description": "Play the famous zen tunes in your help desk.",
-    "long_description": "Play the famous zen tunes in your help desk and \n listen to the beats it has to offer.",
-    "installation_instructions": "Simply click install."
+    "name": "Strongpoint for NetSuite",
+    "short_description": "Customers  push Zendesk tickets into a NetSuite Strongpoint Change Request, enabling easy management of changes",
+    "long_description": "Strongpoint integration with Zendesk help customers to push Zendesk tickets into a NetSuite Strongpoint Change Request, enabling easy management of changes, seamless tracking of compliant changes and automate the reconciliation of change logs during audit.",
+    "installation_instructions": "After install, you should add the NetSuite credentials and we suggest visiting our Help page for more information."
   }
 }

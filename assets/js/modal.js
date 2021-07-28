@@ -86,8 +86,22 @@ async function transmitToNetsuite(scriptDeploy, action, formValues, callback) {
   client
     .request(params)
     .then(results => {
+      if (results.status === 'failed') {
+        notifications('primary', results.message)
+      }
+
       callback(results)
+     
       removeLoader()
+      $('#existing-customizations.bundle-id-lista #loader').removeClass('loader').trigger('enable')
+      $('#existing-customizations.bundle-id-lista #loader-pane').removeClass('loader-pane')
+
+      $(`#bundle-id.bundle-id-lista #loader`).removeClass('loader').trigger('enable')
+      $('#bundle-id.bundle-id-lista #loader-pane').removeClass('loader-pane')
+
+      $(`#proposed-customizations #loader`).removeClass('loader').trigger('enable')
+      $('#proposed-customizations #loader-pane').removeClass('loader-pane')
+     
     })
     .catch(e => {
       removeLoader()
@@ -101,7 +115,7 @@ function getModifyBy() {
   const callback = results => {
     objectResp = JSON.parse(results)
     const impmodif = document.querySelector('#inp-modif')
-    impmodif.innerHTML = objectResp.results
+    impmodif.innerHTML = '<option value="" selected>-Select Modified By-</option>' + objectResp.results
   }
   transmitToNetsuite(scriptDeploy, action, selectOptions, callback)
 }
@@ -307,4 +321,19 @@ function removeLoader() {
     $('#mod-inner #loader').removeClass('loader').trigger('enable')
     $('#mod-inner #loader-pane').removeClass('loader-pane')
   }
+}
+
+
+
+// notificaciones
+function notifications(type, message) {
+  $.showNotification({
+    body: message,
+    duration: 3000,
+    type: type,
+    maxWidth: "300px",
+    shadow: "0 2px 6px rgba(0,0,0,0.2)",
+    zIndex: 100,
+    margin: "1rem"
+  })
 }

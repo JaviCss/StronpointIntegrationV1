@@ -1,7 +1,6 @@
 //client init
 var client = ZAFClient.init()
 client.metadata().then(function (metadata) {})
-var restDomainBase = `https://${accountId.toLowerCase()}.restlets.api.netsuite.com`
 var httpMethod = 'GET'
 /// EDITANDO EMI FER
 async function transmitToNetsuite(scriptDeploy, action, formValues, callback) {
@@ -41,6 +40,7 @@ async function transmitToNetsuite(scriptDeploy, action, formValues, callback) {
             }
             params3 = await client.request(settings).then(
               function (dat) {
+                let acc = []
                 accountId = dat.settings.AccountId
                 consumerKey = dat.settings.ConsumerKey
                 consumerSecret = dat.settings.ConsumerSecret
@@ -80,7 +80,31 @@ async function transmitToNetsuite(scriptDeploy, action, formValues, callback) {
   })
   client
     .request(params)
-    .then(results => callback(results))
+    .then(results => {
+
+      if (results.status === 'failed') {
+        notifications('primary', results.message)
+      }
+
+
+      if (results.status === 'success') {
+
+
+        callback(results)
+        //notifications('info', results.status)
+
+
+      }
+      removeLoader()
+      $('#existing-customizations.bundle-id-lista #loader').removeClass('loader').trigger('enable')
+      $('#existing-customizations.bundle-id-lista #loader-pane').removeClass('loader-pane')
+
+      $(`#bundle-id.bundle-id-lista #loader`).removeClass('loader').trigger('enable')
+      $('#bundle-id.bundle-id-lista #loader-pane').removeClass('loader-pane')
+
+      $(`#proposed-customizations #loader`).removeClass('loader').trigger('enable')
+      $('#proposed-customizations #loader-pane').removeClass('loader-pane')
+    })
     .catch()
 }
 document
@@ -136,6 +160,7 @@ function serviceNestsuite(
   path
 ) {
   function generateTbaHeader(
+    domainBase,
     accountId,
     consumerKey,
     consumerSecret,
@@ -195,4 +220,25 @@ function serviceNestsuite(
     contentType: 'application/json',
   }
   return options
+}
+
+// notificaciones
+function notifications(type, message) {
+  $.showNotification({
+    body: message,
+    duration: 3000,
+    type: type,
+    maxWidth: "300px",
+    shadow: "0 2px 6px rgba(0,0,0,0.2)",
+    zIndex: 100,
+    margin: "1rem"
+  })
+}
+
+
+function removeLoader() {
+  if ($(`#loader`)) {
+    $(`#loader`).removeClass('loader').trigger('enable')
+    $('#loader-pane').removeClass('loader-pane')
+  }
 }

@@ -4,7 +4,7 @@ if (typeof(module) !== 'undefined' && typeof(exports) !== 'undefined') {
 
 /**
  * Constructor
- * @param {Object} opts consumer key and secret
+ * @param {Object} opts 
  */
 function OAuth(opts) {
     if(!(this instanceof OAuth)) {
@@ -60,7 +60,7 @@ function OAuth(opts) {
  * @return {Object} OAuth Authorized data
  */
 OAuth.prototype.authorize = function(request, token) {
-    var oauth_data = {
+    let oauth_data = {
         oauth_consumer_key: this.consumer.key,
         oauth_nonce: this.getNonce(),
         oauth_signature_method: this.signature_method,
@@ -105,7 +105,7 @@ OAuth.prototype.getSignature = function(request, token_secret, oauth_data) {
  * @param {Object} request data
  */
 OAuth.prototype.getBodyHash = function(request, token_secret) {
-  var body = typeof request.data === 'string' ? request.data : JSON.stringify(request.data)
+  let body = typeof request.data === 'string' ? request.data : JSON.stringify(request.data)
 
   if (!this.body_hash_function) {
     throw new Error('body_hash_function option is required');
@@ -135,26 +135,26 @@ OAuth.prototype.getBaseString = function(request, oauth_data) {
  * @return {Object} Parameter string data
  */
 OAuth.prototype.getParameterString = function(request, oauth_data) {
-    var base_string_data;
+    let base_string_data;
     if (oauth_data.oauth_body_hash) {
         base_string_data = this.sortObject(this.percentEncodeData(this.mergeObject(oauth_data, this.deParamUrl(request.url))));
     } else {
         base_string_data = this.sortObject(this.percentEncodeData(this.mergeObject(oauth_data, this.mergeObject(request.data, this.deParamUrl(request.url)))));
     }
 
-    var data_str = '';
+    let data_str = '';
 
     //base_string_data to string
-    for(var i = 0; i < base_string_data.length; i++) {
-        var key = base_string_data[i].key;
-        var value = base_string_data[i].value;
+    for(let i = 0; i < base_string_data.length; i++) {
+        let key = base_string_data[i].key;
+        let value = base_string_data[i].value;
         // check if the value is an array
         // this means that this key has multiple values
         if (value && Array.isArray(value)){
           // sort the array first
           value.sort();
 
-          var valString = "";
+          let valString = "";
           // serialize all values for this key: e.g. formkey=formvalue1&formkey=formvalue2
           value.forEach((function(item, i){
             valString += key + '=' + item;
@@ -203,11 +203,11 @@ OAuth.prototype.getBaseUrl = function(url) {
  * @return {Object}
  */
 OAuth.prototype.deParam = function(string) {
-    var arr = string.split('&');
-    var data = {};
+    let arr = string.split('&');
+    let data = {};
 
-    for(var i = 0; i < arr.length; i++) {
-        var item = arr[i].split('=');
+    for(let i = 0; i < arr.length; i++) {
+        let item = arr[i].split('=');
 
         // '' value
         item[1] = item[1] || '';
@@ -237,7 +237,7 @@ OAuth.prototype.deParam = function(string) {
  * @return {Object}
  */
 OAuth.prototype.deParamUrl = function(url) {
-    var tmp = url.split('?');
+    let tmp = url.split('?');
 
     if (tmp.length === 1)
         return {};
@@ -265,13 +265,13 @@ OAuth.prototype.percentEncode = function(str) {
  * @return {Object} percent encoded data
  */
 OAuth.prototype.percentEncodeData = function(data) {
-    var result = {};
+    let result = {};
 
-    for(var key in data) {
-        var value = data[key];
+    for(let key in data) {
+        let value = data[key];
         // check if the value is an array
         if (value && Array.isArray(value)){
-          var newValue = [];
+          let newValue = [];
           // percentEncode every value
           value.forEach((function(val){
             newValue.push(this.percentEncode(val));
@@ -292,15 +292,15 @@ OAuth.prototype.percentEncodeData = function(data) {
  * @return {String} Header data key - value
  */
 OAuth.prototype.toHeader = function(oauth_data) {
-    var sorted = this.sortObject(oauth_data);
+    let sorted = this.sortObject(oauth_data);
   
-    var header_value = 'OAuth ';
+    let header_value = 'OAuth ';
 
     if (this.realm) {
         header_value += 'realm="' + this.realm + '"' + this.parameter_seperator;
     }
 
-    for(var i = 0; i < sorted.length; i++) {
+    for(let i = 0; i < sorted.length; i++) {
         if (sorted[i].key.indexOf('oauth_') !== 0)
             continue;
 
@@ -317,10 +317,10 @@ OAuth.prototype.toHeader = function(oauth_data) {
  * @return {String} a random word characters string
  */
 OAuth.prototype.getNonce = function() {
-    var word_characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    var result = '';
+    let word_characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = '';
 
-    for(var i = 0; i < this.nonce_length; i++) {
+    for(let i = 0; i < this.nonce_length; i++) {
         result += word_characters[parseInt(Math.random() * word_characters.length, 10)];
     }
 
@@ -347,8 +347,8 @@ OAuth.prototype.mergeObject = function(obj1, obj2) {
     obj1 = obj1 || {};
     obj2 = obj2 || {};
 
-    var merged_obj = obj1;
-    for(var key in obj2) {
+    let merged_obj = obj1;
+    for(let key in obj2) {
         merged_obj[key] = obj2[key];
     }
     return merged_obj;
@@ -360,13 +360,13 @@ OAuth.prototype.mergeObject = function(obj1, obj2) {
  * @return {Array} sorted array
  */
 OAuth.prototype.sortObject = function(data) {
-    var keys = Object.keys(data);
-    var result = [];
+    let keys = Object.keys(data);
+    let result = [];
 
     keys.sort();
 
-    for(var i = 0; i < keys.length; i++) {
-        var key = keys[i];
+    for(let i = 0; i < keys.length; i++) {
+        let key = keys[i];
         result.push({
             key: key,
             value: data[key],
