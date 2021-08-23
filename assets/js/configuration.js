@@ -139,9 +139,10 @@ function setNsCredentials1(
             }
             client.request(settings).then(
               function (data) {
+                console.log(data)       
                 reload(client)
               },
-              function (response) { }
+              function (response) { console.log(response)}
             )
           }
         })
@@ -587,7 +588,9 @@ setTimeout(() => {
 function renderAccount() {
   let accContainer = document.querySelector('#acc-container')
   accContainer.innerHTML = ''
+
   client.metadata().then(async function (metadata) {
+    console.log(metadata)
     let id = metadata.appId
     let settings2 = {
       url: '/api/v2/apps/installations.json?include=app',
@@ -605,6 +608,7 @@ function renderAccount() {
             }
             client.request(settings).then(
               async function (data) {
+                console.log(data)
                 await data.settings_objects.forEach(element => {
                   for (let i = 1; i < 6; i++) {
                     if (createArrAcount(i).includes(element.name)) {
@@ -699,3 +703,9 @@ function reload(client) {
     topBarClient.trigger('reload')
   })
 }
+
+
+
+
+
+

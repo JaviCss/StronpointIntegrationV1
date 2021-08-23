@@ -11,6 +11,8 @@ let statusNS
 let linkCR
 let bundleID = 0
 let crId
+let userAccountSelected
+
 let client = ZAFClient.init()
 client.invoke('resize', { width: '100%', height: '900px' })
 client.on('reload', function () {
@@ -23,15 +25,15 @@ start(client)
 var httpMethod = 'GET'
 function start(client) {
   try {
-
     client.get('ticket').then(async function (data) {
-
       userData = await getCurrentUser()
       userName = userData?.name
       ticketNumber = data.ticket.id.toString()
       ticketSubject = data.ticket.subject
       ticketDescription = data.ticket.description
       ticketStatus = data.ticket.status
+      urlticket = `${data.ticket.brand.url}/agent/tickets/${ticketNumber}`
+      console.log(`${data.ticket.brand.url}/agent/tickets/${ticketNumber}`)
 
       client.metadata().then(metadata => {
         let id = metadata.appId
@@ -82,12 +84,6 @@ function start(client) {
                     getNameAcc()
                     getCustomizations(isOperator, isAdministrator, approvalProcess)
 
-
-
-
-
-
-
                   },
                   function (response) { }
                 )
@@ -97,8 +93,6 @@ function start(client) {
           function (response) { }
         )
       })
-
-
     })
   } catch (error) { }
 }
@@ -176,8 +170,6 @@ function getCustomizations(isOperator, isAdministrator, approvalProcess) {
   const scriptDeploy = 'flo_cr_api'
   const action = 'getCRData'
   const ticketId = { ticketID: ticketNumber }
-
-
   const callback = results => {
     let policyApplied = results.policyApplied
     let levelRequired = results.clReq
@@ -240,9 +232,6 @@ function getCustomizations(isOperator, isAdministrator, approvalProcess) {
     ) {
       document.getElementById('btn-push').style.display = 'flex'
     }
-
-
-
     localStorage.setItem(
       'selectedCustomizationValues',
       JSON.stringify(existingList)
@@ -271,11 +260,15 @@ async function updateTicketStatus(newState) {
   const scriptDeploy = 'flo_cr_api'
   const action = 'createCR'
   const params = {
+    integrationCreatedBy: 'Set by Zendesk',
+    externalLink: urlticket,
     ticketID: ticketNumber,
-    changeNum: ticketSubject,
+    changeNum: ticketNumber,
+    changeName: ticketSubject,
     description: ticketDescription,
     state: newState,
   }
+  console.log(params)
   const callback = results => {
     statusNS = results.statusBarState
     start(client)
@@ -283,7 +276,7 @@ async function updateTicketStatus(newState) {
   await transmitToNetsuite(scriptDeploy, action, params, callback)
 }
 
-function setPathEndoded(baseObject) {
+function setPathEncoded(baseObject) {
   var result = ''
   Object.entries(baseObject).forEach(([item, prop]) => {
     if (prop && prop.trim() !== '')
@@ -291,11 +284,6 @@ function setPathEndoded(baseObject) {
   })
   return result
 }
-
-
-
-
-
 async function transmitToNetsuite(
   scriptDeploy,
   action,
@@ -382,10 +370,9 @@ async function transmitToNetsuite(
       `/app/site/hosting/restlet.nl?script=customscript_${scriptDeploy}&deploy=customdeploy_${scriptDeploy}&action=${action}&${setPath(
         formValues
       )}`,
-      `/app/site/hosting/restlet.nl?script=customscript_${scriptDeploy}&deploy=customdeploy_${scriptDeploy}&action=${action}&${setPathEndoded(
+      `/app/site/hosting/restlet.nl?script=customscript_${scriptDeploy}&deploy=customdeploy_${scriptDeploy}&action=${action}&${setPathEncoded(
         formValues
       )}`
-
     )
 
   })
@@ -401,7 +388,6 @@ async function transmitToNetsuite(
           elementos[i].classList.remove('hid')
           elementos[i].classList.add('vis')
         }
-
         const elementos2 = document.querySelectorAll('#infoNs')
         for (i = 0; i < elementos2.length; i++) {
           elementos2[i].classList.remove('hid')
@@ -418,14 +404,9 @@ async function transmitToNetsuite(
         notifications('primary', results.message)
       }
 
-
       if (results.status === 'success') {
-
-
         callback(results)
-        // notifications('info', results.status)
         removeLoader()
-
       }
       removeLoader()
       $('#existing-customizations.bundle-id-lista #loader').removeClass('loader').trigger('enable')
@@ -528,13 +509,18 @@ function serviceNestsuite(
 function getManifest(client) {
   $('#info #loader').addClass('loader')
   $('#info #loader-pane').addClass('loader-pane')
+  if (localStorage.getItem('userAccountSelected')){
+    $('#select-acc-ui').val( localStorage.getItem('userAccountSelected'))
+  }
+  
   $('#select-acc-ui').change(function () {
     var estado = $('#select-acc-ui').val()
+    localStorage.setItem('userAccountSelected', estado)
     $('#info #loader').addClass('loader')
     $('#info #loader-pane').addClass('loader-pane')
     client.metadata().then(metadata => {
       let id = metadata.appId
-
+    
       let settings2 = {
         url: '/api/v2/apps/installations.json?include=app',
         type: 'GET',
@@ -620,7 +606,7 @@ function getManifest(client) {
   //completa el dropbox
   client.metadata().then(metadata => {
     let id = metadata.appId
-
+    console.log(metadata)
     let settings2 = {
       url: '/api/v2/apps/installations.json?include=app',
       type: 'GET',
@@ -637,6 +623,7 @@ function getManifest(client) {
             }
             client.request(settings).then(
               async function (data) {
+                console.log(data)
                 document.querySelector('#select-acc-ui').innerHTML = ''
                 await data.settings_objects.forEach(element => {
                   for (let i = 1; i < 6; i++) {
@@ -1036,12 +1023,6 @@ function removeLoader() {
     $('#loader-pane').removeClass('loader-pane')
   }
 }
-
-
-
-
-
-
 // notificaciones
 function notifications(type, message) {
   $.showNotification({
